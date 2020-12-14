@@ -20,29 +20,80 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function App() {
-  const [cartProducts, setCartProducts] = useState([]);
   const classes = useStyles();
   const products = ProductsMock();
+  const [cartProducts, setCartProducts] = useState([]);
+  const [carTotal, setCartTotal] = useState(0);
 
-  function handleAddToCard(product) {
+  const handleAddToCard = (product) => {
     const products = [...cartProducts];
-    products.push(product);
+    let found = false;
+    let total = carTotal;
+    for (let i = 0; i < products.length; i++) {
+      if (products[i].productid === product.productid) {
+        found = true;
+        if (products[i].qty <= products[i].maxQty) {
+          products[i].qty++;
+          total += product.price;
+        }
+        break;
+      }
+    }
+    if (!found) {
+      total += product.price;
+      product['qty'] = 1;
+      products.push(product);
+    }
+    setCartProducts(products);
+    setCartTotal(total);
+  }
+
+  function handleDeleteCartItem(product) {
+    const products = [...cartProducts];
+    for (let i = 0; i < products.length; i++) {
+      if (products[i].productid === product.productid) {
+        products.splice(i, 1);
+        break;
+      }
+    }
+    setCartProducts(products);
+  }
+
+  function handleUpdateQuantity(e, product) {
+    const products = [...cartProducts];
+    for (let i = 0; i < products.length; i++) {
+      if (products[i].productid === product.productid) {
+        product['qty'] = e.target.value;
+        break;
+      }
+    }
     setCartProducts(products);
   }
 
   return (
-    <div>
+    <div className="app">
       <h3>Shopping Cart</h3>
-      <div className="App">
+      <div className="appSection">
         <div className="productContainer product-container">
             <GridList cellHeight={180} className={classes.gridList}> 
                 {products.map((product,id) => {
-                  return <Product key={id} item={product} addToCard={handleAddToCard.bind(null, product)}></Product>
+                  return <Product key={id} item={product} addToCard={() => handleAddToCard.bind(null, product)}></Product>
                 })}
             </GridList>
         </div>
-        <div className="cart-container">
-              <Cart></Cart>
+        <div className="cartContainer">
+            {cartProducts.map((product, id) => {
+              return <Cart key={id} cartProduct={product} 
+                deleteCartItem={handleDeleteCartItem.bind(null, product)}
+                updateQuantity={(e) => handleUpdateQuantity(e, product)}>
+              </Cart>
+            })}
+            <div className="cartTotal">
+              <span>Total</span>
+              &nbsp;
+              &nbsp;
+              {(carTotal).toFixed(2)}
+            </div>
         </div>
       </div>
     </div>

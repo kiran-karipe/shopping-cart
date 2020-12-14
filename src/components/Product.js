@@ -3,18 +3,17 @@ import './Product.css';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
 import IconButton from '@material-ui/core/IconButton';
-import image from '../images/pottiiiiii.jpg';
+import image from '../images/breakfast-1.jpg';
+import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 
 const useStyles = makeStyles((theme) => ({
       icon: {
-        color: 'rgba(255, 255, 255, 0.54)',
+        color: 'white',
       },
       gridListTile: {
-          margin: '3% 0 5% 12%',
+          width: '20%',
+          margin: '3% 0 5% 10%',
       },
-      bar: {
-          height: '40px'
-      }
   }));
   
 function Product(props){
@@ -27,6 +26,7 @@ function Product(props){
                 subtitle={<span>Price: {props.item.price}</span>}
                 actionIcon={
                 <IconButton className={classes.icon} onClick={props.addToCard}>
+                    <AddShoppingCartIcon />
                 </IconButton>
                 }
             />

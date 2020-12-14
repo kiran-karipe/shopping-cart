@@ -1,4 +1,8 @@
-.App {
+/* .app {
+  background-color: antiquewhite;
+} */
+
+.appSection {
   display : flex;
 }
 
@@ -8,6 +12,15 @@
   display: inline-block;
 }
 
-.cart-container {
+.cartContainer {
   width : 30%;
+  padding-top: 2%;
+  background-color: aliceblue;
+  position: relative;
+}
+
+.cartTotal {
+  position: absolute;
+  bottom: 3%;
+  right: 5% !important;
 }
